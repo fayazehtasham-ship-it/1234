@@ -52,7 +52,7 @@ PERSONAL_PUSHER_URL = config['NOTIFICATION']['PERSONAL_PUSHER_URL']
 
 # Ban section
 
-BAN_DETECTION = config['BAN']['BAN_DETECTION']
+BAN_DETECTION = config['BAN'].getboolean('BAN_DETECTION')
 
 # Time Section:
 SECONDS_IN_MINUTE = 60
