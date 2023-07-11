@@ -162,6 +162,7 @@ def browser_login():
 
 
 def browser_get_date():
+    logging.info("=== browser_get_date")
     # Requesting to get the whole available dates
     session = driver.get_cookie("_yatri_session")["value"]
     script = JS_SCRIPT % (DATE_URL, session)
@@ -170,13 +171,16 @@ def browser_get_date():
 
 
 def browser_get_time(date):
+    logging.info("=== browser_get_time")
     time_url = TIME_URL % date
     session = driver.get_cookie("_yatri_session")["value"]
     script = JS_SCRIPT % (time_url, session)
-    logging.info("browser_get_time")
     logging.info(script)
+
     content = driver.execute_script(script)
     data = json.loads(content)
+    logging.info(data)
+
     time = data.get("available_times")[-1]
     logging.info(f"Got time successfully! {date} {time}")
     return time
@@ -199,7 +203,11 @@ def browser_reschedule(date):
         "appointments[consulate_appointment][date]": date,
         "appointments[consulate_appointment][time]": time,
     }
+    logging.info(f"Request header: {headers} data: {data}")
+    
     r = requests.post(APPOINTMENT_URL, headers=headers, data=data)
+    logging.info(f"Result: {r.text}")
+
     if (r.text.find('Successfully Scheduled') != -1):
         title = "SUCCESS"
         msg = f"Rescheduled Successfully! {date} {time}"
@@ -327,7 +335,7 @@ if __name__ == "__main__":
         except Exception as e:
             final_notification_title = "ERROR"
             msg = "Exception Occurred! Program will exit.\n"
-            logging.error(e)
+            logging.exception(msg)
             break
 
     print(final_notification_title, msg)
