@@ -317,7 +317,7 @@ if __name__ == "__main__":
                 time.sleep(WORK_COOLDOWN_TIME * SECONDS_IN_HOUR)
             else:
                 sleep_duration = random.randint(
-                    RETRY_TIME_L_BOUND, RETRY_TIME_U_BOUND)
+                    int(RETRY_TIME_L_BOUND), int(RETRY_TIME_U_BOUND))
                 msg = f"Wait {sleep_duration/SECONDS_IN_MINUTE:.2f} minutes before next check"
                 print(msg)
                 logging.info(msg)
