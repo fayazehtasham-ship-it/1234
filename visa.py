@@ -191,7 +191,7 @@ def browser_reschedule(date):
         "Cookie": "_yatri_session=" + driver.get_cookie("_yatri_session")["value"]
     }
     data = {
-        "utf8": driver.find_element(by=By.NAME, value='utf8').get_attribute('value'),
+        #"utf8": driver.find_element(by=By.NAME, value='utf8').get_attribute('value'),  # utf8 element does not exist in the amsterdam website. Does it on others?
         "authenticity_token": driver.find_element(by=By.NAME, value='authenticity_token').get_attribute('value'),
         "confirmed_limit_message": driver.find_element(by=By.NAME, value='confirmed_limit_message').get_attribute('value'),
         "use_consulate_appointment_capacity": driver.find_element(by=By.NAME, value='use_consulate_appointment_capacity').get_attribute('value'),
@@ -200,7 +200,7 @@ def browser_reschedule(date):
         "appointments[consulate_appointment][time]": time,
     }
     r = requests.post(APPOINTMENT_URL, headers=headers, data=data)
-    if (r.text.find('Successfully Scheduled') != -1):
+    if (r.text.lower().find('Successfully Scheduled') != -1):
         title = "SUCCESS"
         msg = f"Rescheduled Successfully! {date} {time}"
     else:
